@@ -1,15 +1,18 @@
 #!/bin/sh
 
-ramSize=0
-zramSize=0
+zramCompress=zstd
+zramDevice=zram0
 
-ram() {
-  ramSize=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*' | bc)
-  zramSize=$(("${ramSize}" * 2))
-}
+# TODO: Check if the user has the following utilities installed `cat`, `grep`, `bc`.
 
-execute() {
-	ram
-}
+ramSize=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*' | bc)
+zramSize=$(("${ramSize}" / 2))
 
-execute
+echo "Creating zram device"
+zramctl --algorithm $zramCompress --size ${zramSize}K /dev/${zramDevice}
+
+echo "Formatting zram device for swap usage"
+mkswap --uuid clear /dev/${zramDevice}
+
+echo "Enabling zram for swap"
+swapon --discard --priority 100 /dev/${zramDevice}
