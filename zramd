@@ -5,7 +5,7 @@ zramDevice=zram0
 
 # TODO: Check if the user has the following utilities installed `cat`, `grep`, `bc`.
 
-ramSize=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*' | bc)
+ramSize=$(grep -i 'memtotal' /proc/meminfo | grep -o '[[:digit:]]*' | bc)
 zramSize=$(("${ramSize}" / 2))
 
 echo "Creating zram device"
