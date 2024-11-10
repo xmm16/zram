@@ -1,0 +1,15 @@
+#!/bin/sh
+
+ramSize=0
+zramSize=0
+
+ram() {
+  ramSize=$(cat /proc/meminfo | grep -i 'memtotal' | grep -o '[[:digit:]]*' | bc)
+  zramSize=$(("${ramSize}" * 2))
+}
+
+execute() {
+	ram
+}
+
+execute
