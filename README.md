@@ -6,6 +6,6 @@ I made this script since there are no init independent zram-related scripts and/
 
 It will run on any POSIX-Compliant shell, init system, coreutilities (Tested on chimerautils)
 
-## Dependencies
+## Userspace Dependencies
 
-Right now, it only needs `cat`, `grep` and `bc`
+A posix compliant environment, and util-linux (for `mkswap`, `swapon`, and `zramctl`).
